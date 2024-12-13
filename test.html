@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wiskunde B-dag 2024 Programma's</title>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/pyodide"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      background-color: #f4f4f4;
+      color: #333;
+    }
+    h1, h2 {
+      color: #0056b3;
+    }
+    textarea {
+      width: 100%;
+      height: 200px;
+    }
+    button {
+      margin: 10px 0;
+      padding: 10px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    pre {
+      background-color: #e8e8e8;
+      padding: 10px;
+      border-radius: 5px;
+      overflow-x: auto;
+    }
+  </style>
+</head>
+<body>
+  <h1>Wiskunde B-dag 2024 Programma's</h1>
+  
+  <section>
+    <h2>Game2024.py</h2>
+    <textarea id="gameInput" placeholder="Geef invoer voor Game2024.py..."></textarea>
+    <button onclick="runPython('game')">Run Game2024.py</button>
+    <pre id="gameOutput">Output verschijnt hier...</pre>
+  </section>
+
+  <section>
+    <h2>Numbers2024.py</h2>
+    <textarea id="numbersInput" placeholder="Geef invoer voor Numbers2024.py..."></textarea>
+    <button onclick="runPython('numbers')">Run Numbers2024.py</button>
+    <pre id="numbersOutput">Output verschijnt hier...</pre>
+  </section>
+
+  <section>
+    <h2>Testen2024.py</h2>
+    <textarea id="testenInput" placeholder="Geef invoer voor Testen2024.py..."></textarea>
+    <button onclick="runPython('testen')">Run Testen2024.py</button>
+    <pre id="testenOutput">Output verschijnt hier...</pre>
+  </section>
+
+  <script>
+    async function loadPyodideAndScripts() {
+      window.pyodide = await loadPyodide();
+      
+      // Voeg hier de scripts toe
+      await pyodide.runPython(`
+        # Voeg Python-code van Game2024.py in
+        def game_program(input_data):
+            return "Game2024.py: nog niet geïmplementeerd"
+
+        # Voeg Python-code van Numbers2024.py in
+        def numbers_program(input_data):
+            return "Numbers2024.py: nog niet geïmplementeerd"
+
+        # Voeg Python-code van Testen2024.py in
+        def testen_program(input_data):
+            return "Testen2024.py: nog niet geïmplementeerd"
+      `);
+    }
+
+    async function runPython(program) {
+      const inputField = document.getElementById(`${program}Input`);
+      const outputField = document.getElementById(`${program}Output`);
+      const userInput = inputField.value;
+
+      try {
+        const result = await pyodide.runPythonAsync(`
+          ${program}_program(${JSON.stringify(userInput)})
+        `);
+        outputField.textContent = result;
+      } catch (error) {
+        outputField.textContent = `Fout: ${error}`;
+      }
+    }
+
+    loadPyodideAndScripts();
+  </script>
+</body>
+</html>
