@@ -40,15 +40,54 @@
   <pre id="gameOutput">Output verschijnt hier...</pre>
 
   <script>
-    let pyodide;
+    let pyodide; // Globale variabele om Pyodide op te slaan
 
     async function loadPyodideAndGameScript() {
-      pyodide = await loadPyodide();
-      await pyodide.runPython(`
-      Print(input_data)
-      
-      `)}
+      pyodide = await loadPyodide(); // Laad Pyodide
+      console.log("Pyodide geladen!");
 
+      // Voeg de Python-code toe
+      await pyodide.runPython(`
+        from itertools import combinations
+
+        # Functie om collineaire punten te controleren
+        def is_collinear(p1, p2, p3):
+            return (p2[1] - p1[1]) * (p3[0] - p2[0]) == (p2[0] - p1[0]) * (p3[1] - p2[1])
+
+        # Functie om te controleren of een set punten een convexe veelhoek vormt
+        def is_convex(points):
+            n = len(points)
+            if n < 3:
+                return False
+
+            def orientation(p, q, r):
+                val = (q[1] - p[1]) * (r[0] - q[0]) - (q[0] - p[0]) * (r[1] - q[1])
+                return val > 0  # True betekent tegen de klok in
+
+            first_orientation = orientation(points[-1], points[0], points[1])
+            for i in range(1, n):
+                if orientation(points[i - 1], points[i], points[(i + 1) % n]) != first_orientation:
+                    return False
+            return True
+
+        # Game-programma
+        def game_program(input_data):
+            try:
+                points = eval(input_data)  # Zet invoer om naar een Python-lijst
+                if not isinstance(points, list) or not all(isinstance(p, tuple) and len(p) == 2 for p in points):
+                    return "Ongeldige invoer. Gebruik een lijst van punten zoals [(0,0), (1,1), ...]"
+
+                if is_convex(points):
+                    return "De ingevoerde punten vormen een convexe veelhoek."
+                else:
+                    return "De ingevoerde punten vormen GEEN convexe veelhoek."
+            except Exception as e:
+                return f"Fout bij het verwerken van de invoer: {e}"
+      `);
+      console.log("Game-script geladen!");
+    }
+
+    // Functie om het game-programma uit te voeren
     async function runGame() {
       const inputField = document.getElementById("gameInput");
       const outputField = document.getElementById("gameOutput");
@@ -69,6 +108,7 @@
       }
     }
 
+    // Laad Pyodide en de game-script zodra de pagina wordt geladen
     loadPyodideAndGameScript();
   </script>
 </body>
