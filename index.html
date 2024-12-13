@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Wiskunde B-dag 2024 Programma's</title>
+  <title>Wiskunde B-dag 2024</title>
   <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/pyodide"></script>
   <style>
     body {
@@ -12,12 +12,12 @@
       background-color: #f4f4f4;
       color: #333;
     }
-    h1, h2 {
+    h1 {
       color: #0056b3;
     }
     textarea {
       width: 100%;
-      height: 200px;
+      height: 150px;
     }
     button {
       margin: 10px 0;
@@ -34,65 +34,42 @@
   </style>
 </head>
 <body>
-  <h1>Wiskunde B-dag 2024 Programma's</h1>
-  
-  <section>
-    <h2>Game2024.py</h2>
-    <textarea id="gameInput" placeholder="Geef invoer voor Game2024.py..."></textarea>
-    <button onclick="runPython('game')">Run Game2024.py</button>
-    <pre id="gameOutput">Output verschijnt hier...</pre>
-  </section>
-
-  <section>
-    <h2>Numbers2024.py</h2>
-    <textarea id="numbersInput" placeholder="Geef invoer voor Numbers2024.py..."></textarea>
-    <button onclick="runPython('numbers')">Run Numbers2024.py</button>
-    <pre id="numbersOutput">Output verschijnt hier...</pre>
-  </section>
-
-  <section>
-    <h2>Testen2024.py</h2>
-    <textarea id="testenInput" placeholder="Geef invoer voor Testen2024.py..."></textarea>
-    <button onclick="runPython('testen')">Run Testen2024.py</button>
-    <pre id="testenOutput">Output verschijnt hier...</pre>
-  </section>
+  <h1>Game2024.py - Veelhoek Game</h1>
+  <textarea id="gameInput" placeholder="Voer punten in als [(x1, y1), (x2, y2), ...]"></textarea>
+  <button onclick="runGame()">Run Game2024.py</button>
+  <pre id="gameOutput">Output verschijnt hier...</pre>
 
   <script>
-    async function loadPyodideAndScripts() {
-      window.pyodide = await loadPyodide();
-      
-      // Voeg hier de scripts toe
+    let pyodide;
+
+    async function loadPyodideAndGameScript() {
+      pyodide = await loadPyodide();
       await pyodide.runPython(`
-        # Voeg Python-code van Game2024.py in
-        def game_program(input_data):
-            return "Game2024.py: nog niet geïmplementeerd"
+      Print(input_data)
+      
+      `)}
 
-        # Voeg Python-code van Numbers2024.py in
-        def numbers_program(input_data):
-            return "Numbers2024.py: nog niet geïmplementeerd"
-
-        # Voeg Python-code van Testen2024.py in
-        def testen_program(input_data):
-            return "Testen2024.py: nog niet geïmplementeerd"
-      `);
-    }
-
-    async function runPython(program) {
-      const inputField = document.getElementById(`${program}Input`);
-      const outputField = document.getElementById(`${program}Output`);
+    async function runGame() {
+      const inputField = document.getElementById("gameInput");
+      const outputField = document.getElementById("gameOutput");
       const userInput = inputField.value;
+
+      if (!pyodide) {
+        outputField.textContent = "Pyodide is nog niet geladen. Probeer het later opnieuw.";
+        return;
+      }
 
       try {
         const result = await pyodide.runPythonAsync(`
-          ${program}_program(${JSON.stringify(userInput)})
+          game_program(${JSON.stringify(userInput)})
         `);
         outputField.textContent = result;
       } catch (error) {
-        outputField.textContent = `Fout: ${error}`;
+        outputField.textContent = `Fout: ${error.message}`;
       }
     }
 
-    loadPyodideAndScripts();
+    loadPyodideAndGameScript();
   </script>
 </body>
 </html>
