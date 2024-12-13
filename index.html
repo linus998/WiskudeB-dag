@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Wiskunde B-dag 2024</title>
-  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/pyodide"></script>
+  <script src="https://cdn.jsdelivr.net/pyodide/v0.23.4/full/pyodide.js"></script>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -34,19 +34,19 @@
   </style>
 </head>
 <body>
-  <h1>Game2024.py - Veelhoek Game</h1>
+  <h1>Test - Veelhoek testen</h1>
   <textarea id="gameInput" placeholder="Voer punten in als [(x1, y1), (x2, y2), ...]"></textarea>
-  <button onclick="runGame()">Run Game2024.py</button>
+  <button onclick="runGame()">Run Test2024.py</button>
   <pre id="gameOutput">Output verschijnt hier...</pre>
 
   <script>
-    let pyodide; // Globale variabele om Pyodide op te slaan
+    let pyodide;
 
     async function loadPyodideAndGameScript() {
-      pyodide = await loadPyodide(); // Laad Pyodide
+      // Laad Pyodide en initieer Python-code
+      pyodide = await loadPyodide();
       console.log("Pyodide geladen!");
 
-      // Voeg de Python-code toe
       await pyodide.runPython(`
         from itertools import combinations
 
@@ -94,7 +94,7 @@
       const userInput = inputField.value;
 
       if (!pyodide) {
-        outputField.textContent = "Pyodide is nog niet geladen. Probeer het later opnieuw.";
+        outputField.textContent = "Pyodide is nog niet geladen.";
         return;
       }
 
